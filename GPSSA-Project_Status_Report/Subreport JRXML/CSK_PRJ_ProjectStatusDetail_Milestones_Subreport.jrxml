@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.1.0.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CSK_PRJ_ProjectStatusDetail_Milestones_Subreport" language="groovy" pageWidth="1038" pageHeight="400" whenNoDataType="NoDataSection" columnWidth="1038" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="CSK_Report_Resource_Bundle" uuid="cb4ba746-d48b-45de-9eef-588d69570e4b">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CA_PPM_DWH_BEAN"/>
+	<property name="ireport.jasperserver.url" value="http://172.23.12.12:8080/reportservice/"/>
+	<property name="ireport.jasperserver.report.resource" value="/Custom/Resources/CSK_PRJ_ProjectStatusDetail_Milestones_Subreport"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Custom/Reports/project_status_report"/>
+	<property name="ireport.jasperserver.user" value="repdev|gpssa"/>
+	<property name="com.jaspersoft.studio.report.unit.description" value="Project Management (PMO Accelerator)"/>
+	<property name="com.jaspersoft.studio.report.description" value="Project"/>
+	<template><![CDATA["repo:/ca_ppm/templates/reportStyleTemplate_" +  $P{ppmUserUITheme} + 
+	                   (OR($P{ppmUserLanguage}.equals("ja"),$P{ppmUserLanguage}.contains("zh"),$P{ppmUserLanguage}.equals("ru"),$P{ppmUserLanguage}.equals("ko"),$P{ppmUserLanguage}.equals("cs")) ? "_dbcs" : "")]]></template>
+	<parameter name="ppmUserUITheme" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[UI Theme]]></parameterDescription>
+	</parameter>
+	<parameter name="ppmUserLanguage" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[User Language]]></parameterDescription>
+	</parameter>
+	<parameter name="projectKey_1" class="java.math.BigDecimal" isForPrompting="false">
+		<parameterDescription><![CDATA[Project]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT t.investment_key AS investment_key,
+       t.task_id AS milestone_id,
+       t.task_name AS milestone_name,
+       t.wbs_sequence AS wbs_sequence,
+       tln.task_status AS task_status,
+       t.finish_date AS finish_date,
+       t.base_finish_date AS base_finish_date,
+       t.days_late AS days_late 
+FROM   dwh_inv_task t
+       LEFT  OUTER JOIN dwh_inv_task_ln tln ON  t.task_key = tln.task_key
+                                            AND tln.language_code = $P{ppmUserLanguage}
+WHERE  1=1  
+AND    t.is_milestone = 1
+AND    t.is_key = 1
+AND    t.investment_key = $P{projectKey_1}]]>
+	</queryString>
+	<field name="INVESTMENT_KEY" class="java.math.BigDecimal"/>
+	<field name="MILESTONE_ID" class="java.lang.String"/>
+	<field name="MILESTONE_NAME" class="java.lang.String"/>
+	<field name="WBS_SEQUENCE" class="java.math.BigDecimal"/>
+	<field name="TASK_STATUS" class="java.lang.String"/>
+	<field name="FINISH_DATE" class="java.sql.Date"/>
+	<field name="BASE_FINISH_DATE" class="java.sql.Date"/>
+	<field name="DAYS_LATE" class="java.math.BigDecimal"/>
+	<sortField name="WBS_SEQUENCE"/>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="52" splitType="Stretch">
+			<textField>
+				<reportElement style="GroupHeader" x="0" y="0" width="1038" height="20" uuid="05ef15cb-0d62-41d1-916e-3980ef2903f5"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{KeyMilestonesKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="22" width="450" height="20" uuid="200f943e-542e-49af-b949-8b78de0e1939"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{NameKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="451" y="22" width="178" height="20" uuid="a4dbe5eb-3ced-403d-a214-16146af974be"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{IDKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="630" y="22" width="100" height="20" uuid="8dad92c6-50cd-4c99-9392-fd2369771d2c"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{StatusKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="731" y="22" width="74" height="20" uuid="00bc180f-d1cc-4740-b9c2-41d574e64894"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{FinishKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="806" y="22" width="74" height="20" uuid="87883fd2-c2ff-46c2-9bf3-8dd26383a3ab"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{BaselineFinishKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="881" y="22" width="74" height="20" uuid="001e0f08-a84e-43ea-8dc9-13bad4bc1644"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{DaysLateKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="956" y="22" width="82" height="20" uuid="a48482b7-4568-4899-a002-b068495989e7"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ScheduleKey}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="0" y="0" width="450" height="18" uuid="895fe73f-baa9-4db4-a859-13d3030c3122"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{MILESTONE_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="451" y="0" width="178" height="18" uuid="83b04539-7ac1-467b-b706-db1c7f352509"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{MILESTONE_ID}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="630" y="0" width="100" height="18" uuid="763e3235-3e22-427d-8404-31a66a6ff788"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{TASK_STATUS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="731" y="0" width="74" height="18" uuid="90d7c63b-e0a0-44e1-85dc-84b52ebe355b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{FINISH_DATE})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="806" y="0" width="74" height="18" uuid="2fe50823-0862-4608-86f0-dc257ed2ab55"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{BASE_FINISH_DATE})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="881" y="0" width="74" height="18" uuid="b4c83887-4ce3-4499-a9d4-56d24339ab89"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{DAYS_LATE}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="990" y="1" width="15" height="15" uuid="66e8b8ba-6bbf-4150-b30a-ad25f1203f9c"/>
+				<imageExpression><![CDATA[$F{DAYS_LATE} <= 0 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{DAYS_LATE} <= 10 ? "repo:/ca_ppm/resources/images/stoplightYellow" : $F{DAYS_LATE} > 10 ? "repo:/ca_ppm/resources/images/stoplightRed" : "repo:/ca_ppm/resources/images/stoplightWhite"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement positionType="Float" x="0" y="19" width="1038" height="1" forecolor="#DCDCDC" uuid="981a8db2-f6dd-40cc-9fdd-b1124d71b560"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band/>
+	</summary>
+	<noData>
+		<band height="42">
+			<textField>
+				<reportElement style="GroupHeader" x="0" y="0" width="1038" height="20" uuid="26c73a30-088e-4b23-b2fa-af18e4589978"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$R{KeyMilestonesKey}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="0" y="22" width="780" height="18" uuid="fb5fdbf1-a2f3-469d-950c-e63c28fd5a2d"/>
+				<textFieldExpression><![CDATA[$R{NoMatchingRecordsKey}]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>
