@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.1.0.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CSK_PRJ_ProjectStatusDetail_Team_Subreport" language="groovy" pageWidth="1038" pageHeight="400" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1038" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="CSK_Report_Resource_Bundle" uuid="e4d1d9df-7346-47fc-8a81-c40d7680b422">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CA_PPM_DWH_BEAN"/>
+	<property name="ireport.jasperserver.url" value="http://172.23.12.12:8080/reportservice/"/>
+	<property name="ireport.jasperserver.report.resource" value="/Custom/Resources/CSK_PRJ_ProjectStatusDetail_Team_Subreport"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Custom/Reports/project_status_report"/>
+	<property name="ireport.jasperserver.user" value="repdev|gpssa"/>
+	<property name="com.jaspersoft.studio.report.unit.description" value="Project Management (PMO Accelerator)"/>
+	<property name="com.jaspersoft.studio.report.description" value="Project"/>
+	<template><![CDATA["repo:/ca_ppm/templates/reportStyleTemplate_" +  $P{ppmUserUITheme} + 
+	                   (OR($P{ppmUserLanguage}.equals("ja"),$P{ppmUserLanguage}.contains("zh"),$P{ppmUserLanguage}.equals("ru"),$P{ppmUserLanguage}.equals("ko"),$P{ppmUserLanguage}.equals("cs")) ? "_dbcs" : "")]]></template>
+	<parameter name="ppmUserUITheme" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[UI Theme]]></parameterDescription>
+	</parameter>
+	<parameter name="ppmUserLanguage" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[User Language]]></parameterDescription>
+	</parameter>
+	<parameter name="dwhDBSchema" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Data Warehouse DB Schema]]></parameterDescription>
+	</parameter>
+	<parameter name="projectKey_1" class="java.math.BigDecimal" isForPrompting="false">
+		<parameterDescription><![CDATA[Project]]></parameterDescription>
+	</parameter>
+	<parameter name="includeInactiveResources" class="java.lang.Boolean" isForPrompting="false">
+		<parameterDescription><![CDATA[Include Inactive Resources?]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT t.investment_key AS investment_key,
+       t.resource_name AS resource_name,
+       t.role_name AS role_name,
+       t.start_date AS start_date,
+       t.finish_date AS finish_date,
+       t.base_start_date AS base_start_date,
+       t.base_finish_date AS base_finish_date,
+       bk.booking_status AS booking_status,
+       s.request_status AS request_status,
+       $P!{dwhDBSchema}.dwh_null_number_fct(sft.alloc_hours,0) AS alloc_hours,
+       SUM($P!{dwhDBSchema}.dwh_null_number_fct(sfa.actual_hours,0)) AS actual_hours,
+       SUM($P!{dwhDBSchema}.dwh_null_number_fct(sfa.etc_hours,0)) AS etc_hours
+FROM   dwh_inv_team t
+       INNER JOIN  dwh_res_resource r ON t.resource_key = r.resource_key
+       LEFT  OUTER JOIN dwh_lkp_request_status s ON  t.request_status_key = s.request_status_key
+                                                 AND s.language_code = $P{ppmUserLanguage}
+       LEFT  OUTER JOIN dwh_lkp_booking_status bk ON  t.booking_status_key = bk.booking_status_key
+                                                  AND bk.language_code = $P{ppmUserLanguage}
+       LEFT  OUTER JOIN dwh_inv_team_summary_facts sft ON  t.team_key = sft.team_key
+                                                       AND t.investment_key = sft.investment_key
+                                                       AND t.resource_key = sft.resource_key 
+       LEFT  OUTER JOIN dwh_inv_assign_summary_facts sfa ON  t.team_key = sfa.team_key
+                                                         AND t.investment_key = sfa.investment_key
+                                                         AND t.resource_key = sfa.resource_key                                                        
+WHERE  1=1
+AND    r.resource_type_key = 0
+AND    t.investment_key = $P{projectKey_1}
+AND   (r.is_active = CASE WHEN $P{includeInactiveResources} = 1 THEN r.is_active ELSE 1 END)
+GROUP  BY t.investment_key, t.resource_name, t.role_name, t.start_date, t.finish_date, t.base_start_date, t.base_finish_date,  
+          bk.booking_status, s.request_status, sft.alloc_hours]]>
+	</queryString>
+	<field name="INVESTMENT_KEY" class="java.math.BigDecimal"/>
+	<field name="RESOURCE_NAME" class="java.lang.String"/>
+	<field name="ROLE_NAME" class="java.lang.String"/>
+	<field name="START_DATE" class="java.sql.Date"/>
+	<field name="FINISH_DATE" class="java.sql.Date"/>
+	<field name="BASE_START_DATE" class="java.sql.Date"/>
+	<field name="BASE_FINISH_DATE" class="java.sql.Date"/>
+	<field name="BOOKING_STATUS" class="java.lang.String"/>
+	<field name="REQUEST_STATUS" class="java.lang.String"/>
+	<field name="ALLOC_HOURS" class="java.math.BigDecimal"/>
+	<field name="ACTUAL_HOURS" class="java.math.BigDecimal"/>
+	<field name="ETC_HOURS" class="java.math.BigDecimal"/>
+	<sortField name="ROLE_NAME"/>
+	<sortField name="RESOURCE_NAME"/>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="52" splitType="Stretch">
+			<textField>
+				<reportElement style="GroupHeader" x="0" y="0" width="1038" height="20" uuid="ada7456d-756c-48a7-b4f0-69b1aed2dfe2"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ProjectTeamKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="22" width="194" height="20" uuid="c8635140-8084-4a59-821a-24611dd33ed8"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ResourceNameKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="195" y="22" width="166" height="20" uuid="4ace4fb7-4bca-4cdb-8a60-5e7f82f42a67"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ProjectRoleKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="362" y="22" width="74" height="20" uuid="8827b338-34f8-4515-91d9-5e39c9a87bb2"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{StartKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="437" y="22" width="74" height="20" uuid="db356f63-f471-406c-9c3e-196a670a4be6"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{BaselineStartKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="512" y="22" width="74" height="20" uuid="4a4cce5a-319c-4736-96d8-cb57426315cf"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{FinishKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="587" y="22" width="74" height="20" uuid="9fb5cdc3-8f6b-46f2-8f02-5de50006eadc"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{BaselineFinishKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="662" y="22" width="74" height="20" uuid="e9faa9f6-ebce-4b4e-a12e-199f244b4ee2"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{BookingStatusKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="737" y="22" width="74" height="20" uuid="ba2c43f8-3c50-4e7b-8783-d60b9f683fc3"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{RequestStatusKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="812" y="22" width="74" height="20" uuid="c266d143-0abb-4974-a61c-192a84766fdf"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{AllocationHoursKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="887" y="22" width="74" height="20" uuid="27404fe3-9668-474c-9007-bcc89dffcffe"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ActualHoursKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="962" y="22" width="76" height="20" uuid="0f6e347a-b155-4341-ba63-303f3b6d5e91"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ETCHoursKey}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="0" y="0" width="194" height="18" uuid="f2247642-86b9-4853-8469-4603f0fc61bc"/>
+				<textFieldExpression><![CDATA[$F{RESOURCE_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="195" y="0" width="166" height="18" uuid="3d9cf3c8-df7e-4aa6-b600-663292e654cc"/>
+				<textFieldExpression><![CDATA[$F{ROLE_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="362" y="0" width="74" height="18" uuid="1b524ca2-f319-4061-8cb6-252371c3e814"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{START_DATE})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="437" y="0" width="74" height="18" uuid="796022e8-c5f3-4828-ac29-9549e0da837e"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{BASE_START_DATE})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="512" y="0" width="74" height="18" uuid="dd3f0532-d7cf-4578-b444-84042b6bd663"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{FINISH_DATE})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="587" y="0" width="74" height="18" uuid="4d430948-7e04-45cd-a51a-260c0789d1cd"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{BASE_FINISH_DATE})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="662" y="0" width="74" height="18" uuid="cdf5e655-9629-4afc-9974-75d25fca8e58"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{BOOKING_STATUS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="737" y="0" width="74" height="18" uuid="8a6e6c02-c3b3-4630-b1d9-e1f185f538f9"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{REQUEST_STATUS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement style="Detail" x="812" y="0" width="74" height="18" uuid="2b958286-de45-4a24-8f38-6f97f73fa575"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ALLOC_HOURS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement style="Detail" x="887" y="0" width="74" height="18" uuid="429621e0-d496-495b-a348-f9f07b8e2795"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ACTUAL_HOURS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement style="Detail" x="962" y="0" width="76" height="18" uuid="d2a37553-dd30-419e-8582-0747f241040d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ETC_HOURS}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="19" width="1038" height="1" forecolor="#DCDCDC" uuid="fc4b6cac-486b-42c6-b133-ce79bb41c67a"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band/>
+	</summary>
+	<noData>
+		<band height="42">
+			<textField>
+				<reportElement style="GroupHeader" x="0" y="0" width="1038" height="20" uuid="6164a252-0b8c-4a60-8616-01631ae56054"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$R{ProjectTeamKey}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="0" y="22" width="780" height="18" uuid="e8fbcf54-4ae3-4ea1-a442-e85276e3e4a2"/>
+				<textFieldExpression><![CDATA[$R{NoMatchingRecordsKey}]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>
