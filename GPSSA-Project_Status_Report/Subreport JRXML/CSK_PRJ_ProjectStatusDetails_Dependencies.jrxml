@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.1.0.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CSK_PRJ_ProjectDependenciesDetails" language="groovy" pageWidth="1040" pageHeight="400" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1040" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="CSK_Report_Resource_Bundle" uuid="701aea9e-c14d-44d0-a3b6-732e63b26e7f">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.jasperserver.url" value="http://172.23.12.12:8080/reportservice/"/>
+	<property name="ireport.jasperserver.user" value="repdev|gpssa"/>
+	<property name="ireport.jasperserver.report.resource" value="/Custom/Resources/CSK_PRJ_ProjectStatusDetails_Dependencies"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Custom/Reports/project_status_report"/>
+	<template><![CDATA["repo:/ca_ppm/templates/reportStyleTemplate_" +  $P{ppmUserUITheme} + 
+	                   (OR($P{ppmUserLanguage}.equals("ja"),$P{ppmUserLanguage}.contains("zh"),$P{ppmUserLanguage}.equals("ru"),$P{ppmUserLanguage}.equals("ko"),$P{ppmUserLanguage}.equals("cs")) ? "_dbcs" : "")]]></template>
+	<parameter name="projectKey_1" class="java.math.BigDecimal" nestedType="java.math.BigDecimal">
+		<parameterDescription><![CDATA[project]]></parameterDescription>
+	</parameter>
+	<parameter name="ppmUserUITheme" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[UI Theme]]></parameterDescription>
+	</parameter>
+	<parameter name="ppmUserLanguage" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[User Language]]></parameterDescription>
+	</parameter>
+	<parameter name="dwhDBSchema" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Data Warehouse DB Schema]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[select 
+  dep.Z_DEPENDENTPROJ as investment_name
+,dep.Z_COMMENTS as comments
+,dep.Z_DATE as Date_of_dependency
+   from  DWH_ODF_Z_DEPENDENCIES dep 
+  where
+  dep.PROJECT_KEY=$P{projectKey_1}]]>
+	</queryString>
+	<field name="investment_name" class="java.lang.String"/>
+	<field name="comments" class="java.lang.String"/>
+	<field name="Date_of_dependency" class="java.sql.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="52" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement style="ColumnHeader" x="1" y="22" width="437" height="25" uuid="abd93b2d-5ba2-4c7f-b564-b293f24d53b7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Depends on]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="ColumnHeader" x="439" y="22" width="81" height="25" uuid="2760434c-c850-45cd-acda-05393da75d1d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="ColumnHeader" x="521" y="22" width="518" height="25" uuid="fe12a0aa-2a0f-4f24-a7a2-b34dbdb964ce">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comments]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="GroupHeader" x="0" y="0" width="1040" height="20" uuid="010db5b4-1d17-4f36-86e1-08e16b5eef44"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dependencies"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" stretchType="RelativeToBandHeight" x="1" y="0" width="437" height="18" uuid="62bc1e57-bea6-4619-a0e7-a37f73620e20"/>
+				<textFieldExpression><![CDATA[$F{investment_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" stretchType="RelativeToBandHeight" x="439" y="0" width="81" height="18" uuid="1362488d-19bd-418f-9c64-462bc9ee36fe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{Date_of_dependency})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" stretchType="RelativeToBandHeight" x="521" y="0" width="518" height="18" uuid="e04c6ac5-42de-4dbb-8390-2948fa49a34b">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{comments}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="19" width="1040" height="1" forecolor="#DCDCDC" uuid="33429fea-88db-405b-8588-6e11045bb3a0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</detail>
+	<noData>
+		<band height="42">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="21" width="780" height="18" uuid="1ffee500-1dd5-4947-8690-d016a4f92bb6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<text><![CDATA[No matching records were found]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="GroupHeader" x="0" y="0" width="1040" height="20" uuid="915faad0-1fd0-4a9b-8888-c695e5586b99"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["Dependencies"]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>
