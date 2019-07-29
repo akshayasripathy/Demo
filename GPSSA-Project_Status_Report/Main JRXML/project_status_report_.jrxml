@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.1.0.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CSK_PRJ_ProjectStatusDetail" language="groovy" pageWidth="1088" pageHeight="720" whenNoDataType="NoDataSection" columnWidth="1048" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" resourceBundle="CSK_Report_Resource_Bundle" uuid="455d4f01-376b-4ab8-a859-f5dd3ea57b72">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CA_PPM_DWH_BEAN"/>
+	<property name="ireport.jasperserver.url" value="http://172.23.12.12:8080/reportservice/"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Custom/Reports/project_status_report"/>
+	<property name="ireport.jasperserver.report.resource" value="/ca_ppm/reports/project_management/CSK_PRJ_ProjectStatusDetail_files/main_jrxml"/>
+	<property name="ireport.jasperserver.user" value="repdev|gpssa"/>
+	<property name="com.jaspersoft.studio.report.unit.description" value="Project Management (PMO Accelerator)"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<template><![CDATA["repo:/ca_ppm/templates/reportStyleTemplate_" +  $P{ppmUserUITheme} + 
+	                   (OR($P{ppmUserLanguage}.equals("ja"),$P{ppmUserLanguage}.contains("zh"),$P{ppmUserLanguage}.equals("ru"),$P{ppmUserLanguage}.equals("ko"),$P{ppmUserLanguage}.equals("cs")) ? "_dbcs" : "")]]></template>
+	<parameter name="LoggedInUser" class="com.jaspersoft.jasperserver.api.metadata.user.domain.User" isForPrompting="false">
+		<parameterDescription><![CDATA[Logged In User]]></parameterDescription>
+	</parameter>
+	<parameter name="ppmUser" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[User Name]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{LoggedInUser}.getUsername()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LoggedInUserAttribute_ppmUserUITheme" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[UI Theme Profile Attribute]]></parameterDescription>
+	</parameter>
+	<parameter name="ppmUserUITheme" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[UI Theme]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{LoggedInUserAttribute_ppmUserUITheme}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LoggedInUserAttribute_ppmUserLanguage" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[User Language Profile Attribute]]></parameterDescription>
+	</parameter>
+	<parameter name="ppmUserLanguage" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[User Language]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{LoggedInUserAttribute_ppmUserLanguage}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LoggedInUserAttribute_dwhDBSchema" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Data Warehouse DB Schema Profile Attribute]]></parameterDescription>
+	</parameter>
+	<parameter name="dwhDBSchema" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Data Warehouse DB Schema]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{LoggedInUserAttribute_dwhDBSchema}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="projectOBSTypeKey_1" class="java.math.BigDecimal">
+		<parameterDescription><![CDATA[OBS Type]]></parameterDescription>
+	</parameter>
+	<parameter name="projectOBSUnitKey_1" class="java.math.BigDecimal">
+		<parameterDescription><![CDATA[Project OBS]]></parameterDescription>
+	</parameter>
+	<parameter name="projectManagerKey_1" class="java.util.Collection" nestedType="java.math.BigDecimal">
+		<parameterDescription><![CDATA[Project Manager]]></parameterDescription>
+	</parameter>
+	<parameter name="projectKey_1" class="java.util.Collection" nestedType="java.math.BigDecimal">
+		<parameterDescription><![CDATA[Project]]></parameterDescription>
+	</parameter>
+	<parameter name="projectStatusKey_1" class="java.util.Collection" nestedType="java.math.BigDecimal">
+		<parameterDescription><![CDATA[Project Status]]></parameterDescription>
+	</parameter>
+	<parameter name="workStatusKey_1" class="java.util.Collection" nestedType="java.lang.String">
+		<parameterDescription><![CDATA[Work Status]]></parameterDescription>
+	</parameter>
+	<parameter name="amountType" class="java.lang.String" nestedType="java.lang.String">
+		<parameterDescription><![CDATA[Amount Type]]></parameterDescription>
+		<defaultValueExpression><![CDATA["Hours"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="riskIssueChangePriorityKey_1" class="java.util.Collection" nestedType="java.lang.String">
+		<parameterDescription><![CDATA[Risk, Issue, and Change Request Priority]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new ArrayList(Arrays.asList("LOW","MEDIUM","HIGH"))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="riskIssueChangeStatusKey_1" class="java.util.Collection" nestedType="java.lang.String">
+		<parameterDescription><![CDATA[Risk, Issue, and Change Request Status]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new ArrayList(Arrays.asList("OPEN","WORK_IN_PROGRESS","RESOLVED"))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="includeInactiveProjects" class="java.lang.Boolean">
+		<parameterDescription><![CDATA[Include Inactive Projects?]]></parameterDescription>
+	</parameter>
+	<parameter name="includeInactiveResources" class="java.lang.Boolean">
+		<parameterDescription><![CDATA[Include Inactive Resources?]]></parameterDescription>
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
+	<parameter name="populateProjectManager" class="java.lang.Boolean">
+		<parameterDescription><![CDATA[Populate Project Manager?]]></parameterDescription>
+	</parameter>
+	<parameter name="populateProject" class="java.lang.Boolean">
+		<parameterDescription><![CDATA[Populate Project?]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT i.investment_key AS investment_key,
+       i.investment_id AS investment_id,
+       i.investment_name AS investment_name,
+       p.objective AS objective,
+       i.investment_manager AS investment_manager,
+       sr1.report_date AS sr_report_date,
+       sr2.report_date AS previous_report_date,
+       sr1.report_update AS sr_report_update,
+       iln.stage AS stage,
+       i.schedule_start AS schedule_start,
+       i.schedule_finish AS schedule_finish,
+       i.baseline_finish AS baseline_finish,
+       $P!{dwhDBSchema}.dwh_null_number_fct(sf.base_total_hours,0) AS base_total_hours,
+       $P!{dwhDBSchema}.dwh_null_number_fct(sf.etc_total_hours,0) AS etc_total_hours,
+       $P!{dwhDBSchema}.dwh_null_number_fct(sf.eac_total_hours,0) AS eac_total_hours,       
+       $P!{dwhDBSchema}.dwh_null_number_fct(sf.actual_total_hours,0) AS actual_total_hours,       
+       $P!{dwhDBSchema}.dwh_null_number_fct(sf.base_total_cost,0) AS base_total_cost,
+       $P!{dwhDBSchema}.dwh_null_number_fct(sf.etc_total_cost,0) AS etc_total_cost,
+       $P!{dwhDBSchema}.dwh_null_number_fct(sf.eac_total_cost,0) AS eac_total_cost,       
+       $P!{dwhDBSchema}.dwh_null_number_fct(sf.actual_total_cost,0) AS actual_total_cost,
+       $P!{dwhDBSchema}.dwh_null_number_fct(sf.eac_base_cost_var,0) AS projected_cost_var,
+       sf.eac_base_cost_pct AS projected_cost_var_pct,
+       $P!{dwhDBSchema}.dwh_null_number_fct(sf.eac_base_hours_var,0) AS projected_hrs_var,
+       sf.eac_base_hours_pct AS projected_hrs_var_pct,              
+       $P!{dwhDBSchema}.dwh_null_number_fct(sr1.overall_status,0) AS c_overall_status,                    
+       $P!{dwhDBSchema}.dwh_null_number_fct(sr1.sr_schedule_status_key,0) AS c_schedule_status, 
+       $P!{dwhDBSchema}.dwh_null_number_fct(sr1.sr_scope_status_key,0) AS c_scope_status,  
+       $P!{dwhDBSchema}.dwh_null_number_fct(sr1.sr_cost_effort_status_key,0) AS c_cost_effort_status,                                                 
+       $P!{dwhDBSchema}.dwh_null_number_fct(sr2.overall_status,0) AS p_overall_status,              
+       $P!{dwhDBSchema}.dwh_null_number_fct(sr2.sr_schedule_status_key,0) AS p_schedule_status, 
+       $P!{dwhDBSchema}.dwh_null_number_fct(sr2.sr_scope_status_key,0) AS p_scope_status,  
+       $P!{dwhDBSchema}.dwh_null_number_fct(sr2.sr_cost_effort_status_key,0) AS p_cost_effort_status,
+       (SELECT MAX(CASE WHEN ri.rim_priority_key = 'LOW' THEN 1
+                        WHEN ri.rim_priority_key = 'MEDIUM' THEN 2
+                        WHEN ri.rim_priority_key = 'HIGH' THEN 3
+                        ELSE 0 END) issue_priority
+        FROM   dwh_rim_issue ri
+        WHERE  $X{IN, ri.rim_status_key, riskIssueChangeStatusKey_1}
+        AND    $X{IN, ri.rim_priority_key, riskIssueChangePriorityKey_1}                
+        AND    ri.investment_key = i.investment_key) AS issue_priority,  
+       (SELECT MAX(CASE WHEN rc.rim_priority_key = 'LOW' THEN 1
+                        WHEN rc.rim_priority_key = 'MEDIUM' THEN 2
+                        WHEN rc.rim_priority_key = 'HIGH' THEN 3
+                        ELSE 0 END) cr_priority
+        FROM   dwh_rim_change_request rc
+        WHERE  $X{IN, rc.rim_status_key, riskIssueChangeStatusKey_1} 
+        AND    $X{IN, rc.rim_priority_key, riskIssueChangePriorityKey_1}               
+        AND    rc.investment_key = i.investment_key) AS cr_priority,                             
+       i.days_late AS days_late,
+       CASE WHEN i.days_late > 10 THEN 3
+            WHEN i.days_late > 0 THEN 2
+            ELSE 1 END AS sched_to_bl_status,
+       CASE WHEN $P!{dwhDBSchema}.dwh_null_number_fct(i.business_alignment,-1) = -1 THEN 0
+            WHEN $P!{dwhDBSchema}.dwh_null_number_fct(i.business_alignment,-1) >= 68 THEN 1
+            WHEN $P!{dwhDBSchema}.dwh_null_number_fct(i.business_alignment,-1) >= 34 THEN 2
+            ELSE 3 END AS alignment_status,
+       CASE WHEN $P!{dwhDBSchema}.dwh_null_number_fct(i.risk,-1) = -1 THEN 0
+            WHEN $P!{dwhDBSchema}.dwh_null_number_fct(i.risk,-1) < 34 THEN 1
+            WHEN $P!{dwhDBSchema}.dwh_null_number_fct(i.risk,-1) < 68 THEN 2
+            ELSE 3 END AS risk_status,
+       pln.idea_prj_type AS project_type,
+       iln.progress AS progress,
+       iln.investment_status AS investment_status,
+       iln.goal AS goal
+FROM   dwh_inv_investment i
+       INNER JOIN  dwh_inv_project p ON i.investment_key = p.investment_key
+       LEFT  OUTER JOIN dwh_inv_investment_ln iln ON  i.investment_key = iln.investment_key
+                                                  AND iln.language_code = $P{ppmUserLanguage}
+       LEFT  OUTER JOIN dwh_inv_project_ln pln ON  p.investment_key = pln.investment_key
+                                               AND pln.language_code = $P{ppmUserLanguage}
+       LEFT  OUTER JOIN dwh_inv_summary_facts sf ON i.investment_key = sf.investment_key
+       LEFT  OUTER JOIN dwh_inv_status_report_latest_v srl1 ON  p.investment_key = srl1.investment_key
+                                                           AND  srl1.report_order = 1
+       LEFT  OUTER JOIN dwh_inv_status_report sr1 ON srl1.status_report_key = sr1.clarity_status_report_key
+       LEFT  OUTER JOIN dwh_inv_status_report_latest_v srl2 ON  p.investment_key = srl2.investment_key
+                                                           AND  srl2.report_order = 2
+       LEFT  OUTER JOIN dwh_inv_status_report sr2 ON srl2.status_report_key = sr2.clarity_status_report_key                 
+WHERE  1=1
+AND    p.is_program = 0
+AND    i.is_template = 0
+AND    (i.is_active = CASE WHEN $P{includeInactiveProjects} = 1 THEN i.is_active ELSE 1 END)
+AND    $X{IN, i.investment_key, projectKey_1} 
+AND    $X{IN, i.investment_manager_key, projectManagerKey_1}
+AND    $X{IN, i.investment_status_key, projectStatusKey_1}
+AND    $X{IN, i.work_status_key, workStatusKey_1}
+AND    ($P{projectOBSUnitKey_1} IS NULL
+        OR     
+        i.investment_key IN (SELECT DISTINCT obsm.investment_key
+                             FROM   dwh_inv_obs_mapping obsm
+                                    INNER JOIN dwh_cmn_obs_hierarchy obsh ON obsm.obs_unit_key = obsh.child_obs_unit_key
+                             WHERE  obsh.parent_obs_unit_key = $P{projectOBSUnitKey_1}))
+AND     EXISTS (SELECT 1
+                FROM   dwh_inv_security_v
+                WHERE  user_uid = $P{ppmUser}
+                AND    investment_type_key = 'project'          
+                AND    investment_key = i.investment_key)]]>
+	</queryString>
+	<field name="INVESTMENT_KEY" class="java.math.BigDecimal"/>
+	<field name="INVESTMENT_ID" class="java.lang.String"/>
+	<field name="INVESTMENT_NAME" class="java.lang.String"/>
+	<field name="OBJECTIVE" class="java.lang.String"/>
+	<field name="INVESTMENT_MANAGER" class="java.lang.String"/>
+	<field name="SR_REPORT_DATE" class="java.sql.Date"/>
+	<field name="PREVIOUS_REPORT_DATE" class="java.sql.Date"/>
+	<field name="SR_REPORT_UPDATE" class="java.lang.String"/>
+	<field name="STAGE" class="java.lang.String"/>
+	<field name="SCHEDULE_FINISH" class="java.sql.Date"/>
+	<field name="BASELINE_FINISH" class="java.sql.Date"/>
+	<field name="BASE_TOTAL_HOURS" class="java.math.BigDecimal"/>
+	<field name="ETC_TOTAL_HOURS" class="java.math.BigDecimal"/>
+	<field name="EAC_TOTAL_HOURS" class="java.math.BigDecimal"/>
+	<field name="ACTUAL_TOTAL_HOURS" class="java.math.BigDecimal"/>
+	<field name="BASE_TOTAL_COST" class="java.math.BigDecimal"/>
+	<field name="ETC_TOTAL_COST" class="java.math.BigDecimal"/>
+	<field name="EAC_TOTAL_COST" class="java.math.BigDecimal"/>
+	<field name="ACTUAL_TOTAL_COST" class="java.math.BigDecimal"/>
+	<field name="PROJECTED_COST_VAR" class="java.math.BigDecimal"/>
+	<field name="PROJECTED_COST_VAR_PCT" class="java.math.BigDecimal"/>
+	<field name="PROJECTED_HRS_VAR" class="java.math.BigDecimal"/>
+	<field name="PROJECTED_HRS_VAR_PCT" class="java.math.BigDecimal"/>
+	<field name="C_OVERALL_STATUS" class="java.math.BigDecimal"/>
+	<field name="C_SCHEDULE_STATUS" class="java.math.BigDecimal"/>
+	<field name="C_SCOPE_STATUS" class="java.math.BigDecimal"/>
+	<field name="C_COST_EFFORT_STATUS" class="java.math.BigDecimal"/>
+	<field name="P_OVERALL_STATUS" class="java.math.BigDecimal"/>
+	<field name="P_SCHEDULE_STATUS" class="java.math.BigDecimal"/>
+	<field name="P_SCOPE_STATUS" class="java.math.BigDecimal"/>
+	<field name="P_COST_EFFORT_STATUS" class="java.math.BigDecimal"/>
+	<field name="ISSUE_PRIORITY" class="java.math.BigDecimal"/>
+	<field name="CR_PRIORITY" class="java.math.BigDecimal"/>
+	<field name="DAYS_LATE" class="java.math.BigDecimal"/>
+	<field name="SCHED_TO_BL_STATUS" class="java.math.BigDecimal"/>
+	<field name="ALIGNMENT_STATUS" class="java.math.BigDecimal"/>
+	<field name="RISK_STATUS" class="java.math.BigDecimal"/>
+	<field name="PROJECT_TYPE" class="java.lang.String"/>
+	<field name="PROGRESS" class="java.lang.String"/>
+	<field name="INVESTMENT_STATUS" class="java.lang.String"/>
+	<field name="GOAL" class="java.lang.String"/>
+	<field name="schedule_start" class="java.sql.Date"/>
+	<sortField name="INVESTMENT_NAME"/>
+	<variable name="vFiller" class="java.lang.String">
+		<variableExpression><![CDATA[" "]]></variableExpression>
+		<initialValueExpression><![CDATA[" "]]></initialValueExpression>
+	</variable>
+	<variable name="vFormatDate" class="java.text.DateFormat">
+		<variableExpression><![CDATA[DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG, new Locale($P{REPORT_LOCALE}.getLanguage(),$P{REPORT_LOCALE}.getCountry()))]]></variableExpression>
+	</variable>
+	<variable name="vFormatTimeZone" class="java.text.DateFormat">
+		<variableExpression><![CDATA[$V{vFormatDate}.setTimeZone(TimeZone.getTimeZone($P{REPORT_TIME_ZONE}.getID()))]]></variableExpression>
+	</variable>
+	<variable name="vToday" class="java.lang.String">
+		<variableExpression><![CDATA[$V{vFormatDate}.format(new Date())]]></variableExpression>
+	</variable>
+	<group name="GroupHeader" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{INVESTMENT_KEY}]]></groupExpression>
+		<groupHeader>
+			<band height="90" splitType="Stretch">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField>
+					<reportElement style="PageHeaderDropShadow" x="5" y="60" width="1040" height="26" uuid="3f9cd2ff-6ecf-492f-9b3b-9cc082eec8a9">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$V{vFiller}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="PageHeader" x="0" y="55" width="1040" height="26" uuid="99ac73d1-9cf7-44f0-bd9c-2082e9386b62">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$R{ProjectStatusDetailKey} + ":  " + $F{INVESTMENT_NAME}]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement mode="Opaque" x="1000" y="1" width="50" height="50" uuid="b43d2889-3e00-4b71-818c-ff575e30e656">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<imageExpression><![CDATA["repo:gpssa"]]></imageExpression>
+				</image>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="GroupDetail">
+		<groupExpression><![CDATA[$F{INVESTMENT_KEY}]]></groupExpression>
+		<groupHeader>
+			<band height="358">
+				<frame>
+					<reportElement x="0" y="0" width="1048" height="358" uuid="6b439bb0-99ae-475e-8861-4a8703803f43"/>
+					<frame>
+						<reportElement style="FrameBorder" x="2" y="0" width="516" height="50" uuid="a4842e0c-9097-4a87-9f30-488220b459a8"/>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="4" width="130" height="20" uuid="6076de9a-c256-4db6-9a3f-b4d26f3e21d7"/>
+							<textFieldExpression><![CDATA[$R{ProjectIDKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="136" y="4" width="118" height="20" uuid="69a30235-96eb-48f5-b56e-134d11e9f017"/>
+							<textFieldExpression><![CDATA[$F{INVESTMENT_ID}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="26" width="130" height="20" uuid="9af5a8f9-4d22-4f04-8812-783141f3983c"/>
+							<textFieldExpression><![CDATA[$R{ProjectManagerKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="136" y="26" width="118" height="20" uuid="52ef3e59-2116-4166-a349-219cf7192436"/>
+							<textFieldExpression><![CDATA[$F{INVESTMENT_MANAGER}]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement x="256" y="1" width="1" height="48" forecolor="#AEBDCB" uuid="a307bfee-548f-4053-9712-c8f4ff277c62"/>
+						</line>
+						<textField>
+							<reportElement style="DetailHeader" x="259" y="4" width="156" height="20" uuid="1fa5eaa8-d986-4e5d-b244-447bd01ae891"/>
+							<textFieldExpression><![CDATA[$R{StatusReportDateKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="417" y="4" width="96" height="20" uuid="57c6ae87-9719-499f-a08a-000da93ef695"/>
+							<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{SR_REPORT_DATE})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="259" y="26" width="156" height="20" uuid="c9468f7d-398c-4423-b81b-f3cd10db6f5c"/>
+							<textFieldExpression><![CDATA[$R{PreviousReportDateKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="417" y="26" width="96" height="20" uuid="9d289a2d-6301-4c34-a664-2103a4a1b105"/>
+							<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{PREVIOUS_REPORT_DATE})]]></textFieldExpression>
+						</textField>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" x="2" y="56" width="516" height="50" uuid="7efa9a5b-228b-436b-941c-1f98d90fcbb2"/>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="4" width="130" height="20" uuid="cd2e94a2-7bb4-41ef-80cd-43a92ec2f916"/>
+							<textFieldExpression><![CDATA[$R{ProjectTypeKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="136" y="4" width="118" height="20" uuid="622d671f-cc2a-4bff-a2ef-aa9d22db8744"/>
+							<textFieldExpression><![CDATA[$F{PROJECT_TYPE}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="26" width="130" height="20" uuid="eade060c-a455-4a8f-a46f-1631a40d7bf2"/>
+							<textFieldExpression><![CDATA[$R{Goal_Key}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="136" y="26" width="118" height="20" uuid="3d70c454-ba1f-45e6-8086-64768030095d"/>
+							<textFieldExpression><![CDATA[$F{GOAL}]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement x="256" y="1" width="1" height="48" forecolor="#AEBDCB" uuid="9727a0b2-6297-43d7-8921-78db308a751a"/>
+						</line>
+						<textField>
+							<reportElement style="DetailHeader" x="259" y="4" width="156" height="20" uuid="4b8aefe8-f815-412a-8b39-98051b42b3e1"/>
+							<textFieldExpression><![CDATA[$R{StatusKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="417" y="4" width="96" height="20" uuid="c06c1cc6-1c45-4b0e-ab7b-8bce18f6056e"/>
+							<textFieldExpression><![CDATA[$F{INVESTMENT_STATUS}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="259" y="26" width="156" height="20" uuid="cc844949-1bb0-477b-8723-7464ea51587e"/>
+							<textFieldExpression><![CDATA[$R{ProgressKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="417" y="26" width="96" height="20" uuid="9fed553a-6a15-41ed-bc70-de67cdee1140"/>
+							<textFieldExpression><![CDATA[$F{PROGRESS}]]></textFieldExpression>
+						</textField>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" stretchType="RelativeToBandHeight" x="2" y="112" width="516" height="242" uuid="36a41d1e-6232-44d3-9ab0-1b26c3c898fc"/>
+						<textField>
+							<reportElement style="GroupHeader" x="0" y="0" width="514" height="20" uuid="2318c6a1-c215-477a-acfb-1d006be1d4d4"/>
+							<textFieldExpression><![CDATA[$R{SRUpdateKey}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement style="Detail" x="4" y="26" width="508" height="210" uuid="378e2812-4ff3-4cb2-969c-55e89c27a72d"/>
+							<textElement verticalAlignment="Top"/>
+							<textFieldExpression><![CDATA[$F{SR_REPORT_UPDATE}]]></textFieldExpression>
+						</textField>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" x="524" y="0" width="270" height="262" uuid="7e7e2e24-27d0-4042-855d-5034b5a568b0"/>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="3" width="100" height="20" uuid="9cde8ae1-d54d-49d0-a33a-3af278577be0"/>
+							<textFieldExpression><![CDATA[$R{StageKey}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement style="Detail" x="106" y="3" width="162" height="20" uuid="2a3fb427-aeff-4f5f-909b-436319103a1c"/>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[$F{STAGE}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="47" width="186" height="15" uuid="2d024dda-31fe-47fa-b56b-2358f08a73ec">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textFieldExpression><![CDATA[$R{FinishDateKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="194" y="47" width="74" height="15" uuid="71634b35-33c8-4f86-87ed-dfeacebc3a0a">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{SCHEDULE_FINISH})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="67" width="186" height="15" uuid="0ef00672-f513-4685-baf2-08ef9c22768d">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textFieldExpression><![CDATA[$R{BaselineFinishDateKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="194" y="67" width="74" height="15" uuid="a2ee5634-db03-47d0-8b6c-61759e429da8">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{BASELINE_FINISH})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="86" width="186" height="15" uuid="6b9eebf7-79ac-49fd-9f1e-e2d4cae39f22">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textFieldExpression><![CDATA[$R{DaysLateKey}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0">
+							<reportElement style="Detail" x="194" y="86" width="74" height="15" uuid="3632fa5a-ff44-4e0a-9e16-cc2d18b7cb64">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[$F{DAYS_LATE}]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement x="1" y="104" width="268" height="1" forecolor="#AEBDCB" uuid="fb02c8cd-eefb-4da6-a27b-7b976dbfbff9"/>
+						</line>
+						<textField>
+							<reportElement style="Detail" x="4" y="107" width="182" height="18" uuid="8caebcee-8e06-48c1-a82f-eab50379d750"/>
+							<textFieldExpression><![CDATA[$V{vFiller}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="188" y="107" width="80" height="18" uuid="2cc3c712-2f9d-4681-a93c-ecc17627116e"/>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[$P{amountType} == "Hours" ? " (" + $R{HoursKey} + ") "  : " (" + $R{CostKey} + ") "]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="126" width="182" height="18" uuid="3986edd4-f091-4fed-92ce-d87bf8a354af"/>
+							<textFieldExpression><![CDATA[$R{BaselineKey}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement style="Detail" x="188" y="126" width="80" height="18" uuid="35dec11b-b512-4137-805a-2863109c92f6"/>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[$P{amountType} == "Hours" ? $F{BASE_TOTAL_HOURS} : $F{BASE_TOTAL_COST}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="146" width="182" height="18" uuid="b369be9c-f277-45ce-a6b3-89b1891b5951"/>
+							<textFieldExpression><![CDATA[$R{ActualsKey}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement style="Detail" x="188" y="146" width="80" height="18" uuid="136a052e-18ed-4533-85fe-5e48f0f42bf1"/>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[$P{amountType} == "Hours" ? $F{ACTUAL_TOTAL_HOURS} : $F{ACTUAL_TOTAL_COST}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="166" width="182" height="18" uuid="b3ec97fd-3fb1-4632-a5ae-0fcc70d1bb0c"/>
+							<textFieldExpression><![CDATA[$R{ETCKey}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement style="Detail" x="188" y="166" width="80" height="18" uuid="78065bd9-4fe2-4dd0-85a9-e4cfc288d711"/>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[$P{amountType} == "Hours" ? $F{ETC_TOTAL_HOURS} : $F{ETC_TOTAL_COST}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="186" width="182" height="18" uuid="a08f389d-aa83-4207-b9a3-067435408726"/>
+							<textFieldExpression><![CDATA[$R{EACKey}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement style="Detail" x="188" y="186" width="80" height="18" uuid="b60670c6-648c-4cc2-93cd-4c1a23ca5b1f"/>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[$P{amountType} == "Hours" ? $F{EAC_TOTAL_HOURS} : $F{EAC_TOTAL_COST}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="206" width="182" height="28" uuid="32839bd5-f612-4e0d-bf62-485e546652c6"/>
+							<textFieldExpression><![CDATA[$P{amountType} == "Hours" ? $R{ProjectedEffortVarKey} : $R{ProjectedCostVarKey}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement style="Detail" x="188" y="206" width="80" height="28" uuid="0832a3b5-3cdf-46ca-a26b-e231fc05aa8f"/>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[$P{amountType} == "Hours" ? $F{PROJECTED_HRS_VAR} : $F{PROJECTED_COST_VAR}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="DetailHeader" x="4" y="236" width="230" height="18" uuid="d75102a8-58e3-4453-bfbc-4032ea862e15"/>
+							<textFieldExpression><![CDATA[$P{amountType} == "Hours" ? $R{ProjectedEffortVar%Key} : $R{ProjectedCostVar%Key}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="246" y="237" width="15" height="15" uuid="c8cc4d3b-ccf0-44e8-8793-7ba508fc15f5">
+								<printWhenExpression><![CDATA[$P{amountType} == "Hours"]]></printWhenExpression>
+							</reportElement>
+							<imageExpression><![CDATA[$F{PROJECTED_HRS_VAR_PCT} == null ? "repo:/ca_ppm/resources/images/stoplightWhite" : $F{PROJECTED_HRS_VAR_PCT} <= 1 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{PROJECTED_HRS_VAR_PCT} <= 11 ? "repo:/ca_ppm/resources/images/stoplightYellow" : "repo:/ca_ppm/resources/images/stoplightRed"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="246" y="237" width="15" height="15" uuid="7bc951e0-0565-48a9-b59d-f5bcebdfd015">
+								<printWhenExpression><![CDATA[$P{amountType} == "Cost"]]></printWhenExpression>
+							</reportElement>
+							<imageExpression><![CDATA[$F{PROJECTED_COST_VAR_PCT} == null ? "repo:/ca_ppm/resources/images/stoplightWhite" : $F{PROJECTED_COST_VAR_PCT} <= 1 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{PROJECTED_COST_VAR_PCT} <= 11 ? "repo:/ca_ppm/resources/images/stoplightYellow" : "repo:/ca_ppm/resources/images/stoplightRed"]]></imageExpression>
+						</image>
+						<line>
+							<reportElement positionType="Float" x="1" y="26" width="268" height="1" forecolor="#AEBDCB" uuid="064de1b4-1e73-4f42-9250-c94d8e39a40d"/>
+						</line>
+						<textField>
+							<reportElement style="Detail" x="194" y="29" width="74" height="15" uuid="9c73d5e0-658d-41a4-b709-81eebffb249e">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right"/>
+							<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{schedule_start})]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="4" y="29" width="186" height="15" uuid="3e11015d-9489-4143-987b-bcfae4005689">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="SansSerif" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Start Date]]></text>
+						</staticText>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" x="800" y="0" width="242" height="116" uuid="10e30dcb-0cb1-4bfe-8191-95210cdad28a"/>
+						<textField>
+							<reportElement style="GroupHeader" x="0" y="0" width="240" height="20" uuid="5faa9477-72b3-4b07-8bfb-65841f579e12"/>
+							<textFieldExpression><![CDATA[$R{SRIndicatorsKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="4" y="24" width="180" height="20" uuid="aeb7b5c0-a523-42b7-96d3-0078f306aff4"/>
+							<textFieldExpression><![CDATA[$R{OverallKey}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="188" y="26" width="15" height="15" uuid="f26a4073-45b1-4b85-97f2-425d2c23c2a4"/>
+							<imageExpression><![CDATA[$F{C_OVERALL_STATUS} == 0 ? "repo:/ca_ppm/resources/images/stoplightWhite" : $F{C_OVERALL_STATUS} < 40 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{C_OVERALL_STATUS} < 90 ? "repo:/ca_ppm/resources/images/stoplightYellow" : "repo:/ca_ppm/resources/images/stoplightRed"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="218" y="26" width="15" height="15" uuid="97e8e9b0-4d30-42db-baf4-4c9b38964e4e"/>
+							<imageExpression><![CDATA[$F{P_OVERALL_STATUS} == 0 ? "repo:/ca_ppm/resources/images/arrowSideGrey" : $F{C_OVERALL_STATUS} < $F{P_OVERALL_STATUS} ? "repo:/ca_ppm/resources/images/arrowUpGrey" : $F{C_OVERALL_STATUS} > $F{P_OVERALL_STATUS} ? "repo:/ca_ppm/resources/images/arrowDownGrey" : "repo:/ca_ppm/resources/images/arrowSideGrey"]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement style="Detail" x="4" y="46" width="180" height="20" uuid="8fd2041c-f20e-43d1-ac64-99b5748fc675"/>
+							<textFieldExpression><![CDATA[$R{ScheduleKey}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="188" y="48" width="15" height="15" uuid="ec216c34-2fde-4191-91a7-fe6103259022"/>
+							<imageExpression><![CDATA[$F{C_SCHEDULE_STATUS} == 10 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{C_SCHEDULE_STATUS} == 20 ? "repo:/ca_ppm/resources/images/stoplightYellow" : $F{C_SCHEDULE_STATUS} == 30 ? "repo:/ca_ppm/resources/images/stoplightRed" : "repo:/ca_ppm/resources/images/stoplightWhite"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="218" y="48" width="15" height="15" uuid="3bda1f78-a4a7-4790-ae1e-178804032906"/>
+							<imageExpression><![CDATA[$F{P_SCHEDULE_STATUS} == 0 ? "repo:/ca_ppm/resources/images/arrowSideGrey" : $F{C_SCHEDULE_STATUS} < $F{P_SCHEDULE_STATUS} ? "repo:/ca_ppm/resources/images/arrowUpGrey" : $F{C_SCHEDULE_STATUS} > $F{P_SCHEDULE_STATUS} ? "repo:/ca_ppm/resources/images/arrowDownGrey" : "repo:/ca_ppm/resources/images/arrowSideGrey"]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement style="Detail" x="4" y="68" width="180" height="20" uuid="0ef887fe-4267-4468-84c9-61e040ea2c08"/>
+							<textFieldExpression><![CDATA[$R{ScopeKey}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="188" y="70" width="15" height="15" uuid="335a6c13-c7ec-4dad-ba2e-f45860a0677a"/>
+							<imageExpression><![CDATA[$F{C_SCOPE_STATUS} == 10 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{C_SCOPE_STATUS} == 20 ? "repo:/ca_ppm/resources/images/stoplightYellow" : $F{C_SCOPE_STATUS} == 30 ? "repo:/ca_ppm/resources/images/stoplightRed" : "repo:/ca_ppm/resources/images/stoplightWhite"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="218" y="70" width="15" height="15" uuid="5021ce12-3a35-45a5-81eb-dee4be732e74"/>
+							<imageExpression><![CDATA[$F{P_SCOPE_STATUS} == 0 ? "repo:/ca_ppm/resources/images/arrowSideGrey" : $F{C_SCOPE_STATUS} < $F{P_SCOPE_STATUS} ? "repo:/ca_ppm/resources/images/arrowUpGrey" : $F{C_SCOPE_STATUS} > $F{P_SCOPE_STATUS} ? "repo:/ca_ppm/resources/images/arrowDownGrey" : "repo:/ca_ppm/resources/images/arrowSideGrey"]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement style="Detail" x="4" y="90" width="180" height="20" uuid="e6e9ff3e-3ad7-412c-b4dd-96610bad8856"/>
+							<textFieldExpression><![CDATA[$R{CostAndEffortKey}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="188" y="90" width="15" height="15" uuid="737c94fb-adfc-43db-bf60-755d711e40d4"/>
+							<imageExpression><![CDATA[$F{C_COST_EFFORT_STATUS} == 10 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{C_COST_EFFORT_STATUS} == 20 ? "repo:/ca_ppm/resources/images/stoplightYellow" : $F{C_COST_EFFORT_STATUS} == 30 ? "repo:/ca_ppm/resources/images/stoplightRed" : "repo:/ca_ppm/resources/images/stoplightWhite"]]></imageExpression>
+						</image>
+						<image>
+							<reportElement x="218" y="90" width="15" height="15" uuid="89374912-4782-4723-bd07-1ea7e63b52c7"/>
+							<imageExpression><![CDATA[$F{P_COST_EFFORT_STATUS} == 0 ? "repo:/ca_ppm/resources/images/arrowSideGrey" : $F{C_COST_EFFORT_STATUS} < $F{P_COST_EFFORT_STATUS} ? "repo:/ca_ppm/resources/images/arrowUpGrey" : $F{C_COST_EFFORT_STATUS} > $F{P_COST_EFFORT_STATUS} ? "repo:/ca_ppm/resources/images/arrowDownGrey" : "repo:/ca_ppm/resources/images/arrowSideGrey"]]></imageExpression>
+						</image>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" x="800" y="122" width="242" height="140" uuid="1800b9c2-c6d4-43e4-9c5a-f15d3c3d1aad"/>
+						<textField>
+							<reportElement style="GroupHeader" x="0" y="0" width="240" height="20" uuid="9fcf2055-3c27-4b9a-b785-66803b1abe08"/>
+							<textFieldExpression><![CDATA[$R{ProjectIndicatorsKey}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="4" y="24" width="190" height="20" uuid="b114c6e8-ec20-489f-9e79-e0ce9aa93436"/>
+							<textFieldExpression><![CDATA[$R{SchedToBaselineKey}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="208" y="26" width="15" height="15" uuid="c7a8fb73-28f9-41e3-af57-041021505369"/>
+							<imageExpression><![CDATA[$F{SCHED_TO_BL_STATUS} == 1 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{SCHED_TO_BL_STATUS} == 2 ? "repo:/ca_ppm/resources/images/stoplightYellow" : $F{SCHED_TO_BL_STATUS} == 3 ? "repo:/ca_ppm/resources/images/stoplightRed" : "repo:/ca_ppm/resources/images/stoplightWhite"]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement style="Detail" x="4" y="46" width="190" height="20" uuid="b2e5aa47-b46e-40b2-9bb7-381be696e100"/>
+							<textFieldExpression><![CDATA[$R{AlignmentKey}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="208" y="48" width="15" height="15" uuid="f68b6566-aac6-4d53-ac5f-b786c5cf3326"/>
+							<imageExpression><![CDATA[$F{ALIGNMENT_STATUS} == 1 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{ALIGNMENT_STATUS} == 2 ? "repo:/ca_ppm/resources/images/stoplightYellow" : $F{ALIGNMENT_STATUS} == 3 ? "repo:/ca_ppm/resources/images/stoplightRed" : "repo:/ca_ppm/resources/images/stoplightWhite"]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement style="Detail" x="4" y="68" width="190" height="20" uuid="f5dee45a-c148-43b9-ac1d-97a197896c6b"/>
+							<textFieldExpression><![CDATA[$R{RiskKey}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="208" y="70" width="15" height="15" uuid="ad10a04d-0b51-4394-9782-148be2c77df8"/>
+							<imageExpression><![CDATA[$F{RISK_STATUS} == 1 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{RISK_STATUS} == 2 ? "repo:/ca_ppm/resources/images/stoplightYellow" : $F{RISK_STATUS} == 3 ? "repo:/ca_ppm/resources/images/stoplightRed" : "repo:/ca_ppm/resources/images/stoplightWhite"]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement style="Detail" x="4" y="90" width="190" height="20" uuid="6c663f32-8cbd-4853-b3cb-1fe9954e6830"/>
+							<textFieldExpression><![CDATA[$R{IssueKey}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="208" y="92" width="15" height="15" uuid="04572a01-d8b9-412c-af58-b8cf89917019"/>
+							<imageExpression><![CDATA[$F{ISSUE_PRIORITY}  == 1 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{ISSUE_PRIORITY} == 2 ? "repo:/ca_ppm/resources/images/stoplightYellow" : $F{ISSUE_PRIORITY} == 3 ? "repo:/ca_ppm/resources/images/stoplightRed" : "repo:/ca_ppm/resources/images/stoplightWhite"]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement style="Detail" x="4" y="112" width="190" height="20" uuid="08db1491-3297-44e0-b802-06f4385fbfde"/>
+							<textFieldExpression><![CDATA[$R{ChangeKey}]]></textFieldExpression>
+						</textField>
+						<image>
+							<reportElement x="208" y="114" width="15" height="15" uuid="ecb690ae-d98c-4f5f-8e89-dc6065df9fff"/>
+							<imageExpression><![CDATA[$F{CR_PRIORITY}  == 1 ? "repo:/ca_ppm/resources/images/stoplightGreen" : $F{CR_PRIORITY} == 2 ? "repo:/ca_ppm/resources/images/stoplightYellow" : $F{CR_PRIORITY} == 3 ? "repo:/ca_ppm/resources/images/stoplightRed" : "repo:/ca_ppm/resources/images/stoplightWhite"]]></imageExpression>
+						</image>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" stretchType="RelativeToBandHeight" x="524" y="268" width="518" height="86" uuid="efaf4dde-e126-4d99-ad89-64b5160ad4aa"/>
+						<textField>
+							<reportElement style="GroupHeader" x="0" y="0" width="516" height="20" isRemoveLineWhenBlank="true" uuid="6b5b2c93-8e0a-4fbb-8d7c-15b8e16e32f0"/>
+							<textFieldExpression><![CDATA[$R{ProjectObjectiveKey}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement style="Detail" x="4" y="26" width="510" height="54" uuid="4d827dda-8ec2-4589-94c4-3ca78a9c60c7"/>
+							<textElement verticalAlignment="Top"/>
+							<textFieldExpression><![CDATA[$F{OBJECTIVE}]]></textFieldExpression>
+						</textField>
+					</frame>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="164">
+				<frame>
+					<reportElement x="0" y="0" width="1042" height="160" uuid="da1349f0-09b0-4dfb-98a3-8b99efc02b06"/>
+					<frame>
+						<reportElement style="FrameBorder" positionType="Float" x="2" y="4" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="9ccb1e0c-060b-4afc-a2da-1ba66bc7226f">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<subreport>
+							<reportElement positionType="Float" x="0" y="0" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="4e5b9a60-b725-4b62-aa4f-23c537e1c9d1">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							</reportElement>
+							<subreportParameter name="ppmUserUITheme">
+								<subreportParameterExpression><![CDATA[$P{ppmUserUITheme}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="ppmUserLanguage">
+								<subreportParameterExpression><![CDATA[$P{ppmUserLanguage}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="dwhDBSchema">
+								<subreportParameterExpression><![CDATA[$P{dwhDBSchema}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="projectKey_1">
+								<subreportParameterExpression><![CDATA[$F{INVESTMENT_KEY}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="includeInactiveResources">
+								<subreportParameterExpression><![CDATA[$P{includeInactiveResources}]]></subreportParameterExpression>
+							</subreportParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							<subreportExpression><![CDATA["repo:CSK_PRJ_ProjectStatusDetail_Team_Subreport"]]></subreportExpression>
+						</subreport>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" positionType="Float" x="2" y="31" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="022c73f6-1cab-47af-a126-a12d5ae9b5b2">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<subreport>
+							<reportElement positionType="Float" x="0" y="0" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="eaeb312f-05eb-4465-8fb7-e33a65aba894">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							</reportElement>
+							<subreportParameter name="ppmUserUITheme">
+								<subreportParameterExpression><![CDATA[$P{ppmUserUITheme}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="ppmUserLanguage">
+								<subreportParameterExpression><![CDATA[$P{ppmUserLanguage}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="projectKey_1">
+								<subreportParameterExpression><![CDATA[$F{INVESTMENT_KEY}]]></subreportParameterExpression>
+							</subreportParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							<subreportExpression><![CDATA["repo:CSK_PRJ_ProjectStatusDetail_Milestones_Subreport"]]></subreportExpression>
+						</subreport>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" positionType="Float" x="2" y="58" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="5d9d0a15-285f-4e36-9bc1-ca7bbbcf16e4">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<subreport>
+							<reportElement positionType="Float" x="0" y="0" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="4a65a4fa-a31f-4cbf-99d0-06edcbcbe9c8">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							</reportElement>
+							<subreportParameter name="ppmUserUITheme">
+								<subreportParameterExpression><![CDATA[$P{ppmUserUITheme}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="ppmUserLanguage">
+								<subreportParameterExpression><![CDATA[$P{ppmUserLanguage}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="projectKey_1">
+								<subreportParameterExpression><![CDATA[$F{INVESTMENT_KEY}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="riskIssueChangePriorityKey_1">
+								<subreportParameterExpression><![CDATA[$P{riskIssueChangePriorityKey_1}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="riskIssueChangeStatusKey_1">
+								<subreportParameterExpression><![CDATA[$P{riskIssueChangeStatusKey_1}]]></subreportParameterExpression>
+							</subreportParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							<subreportExpression><![CDATA["repo:CSK_PRJ_ProjectStatusDetail_Risks_Subreport"]]></subreportExpression>
+						</subreport>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" positionType="Float" x="2" y="85" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="296483bf-b1b9-48df-9c7c-8d0c6966cac9">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<subreport>
+							<reportElement positionType="Float" x="0" y="0" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="224dd312-6464-4f3a-a292-40dcb851bd57">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							</reportElement>
+							<subreportParameter name="ppmUserUITheme">
+								<subreportParameterExpression><![CDATA[$P{ppmUserUITheme}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="ppmUserLanguage">
+								<subreportParameterExpression><![CDATA[$P{ppmUserLanguage}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="projectKey_1">
+								<subreportParameterExpression><![CDATA[$F{INVESTMENT_KEY}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="riskIssueChangePriorityKey_1">
+								<subreportParameterExpression><![CDATA[$P{riskIssueChangePriorityKey_1}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="riskIssueChangeStatusKey_1">
+								<subreportParameterExpression><![CDATA[$P{riskIssueChangeStatusKey_1}]]></subreportParameterExpression>
+							</subreportParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							<subreportExpression><![CDATA["repo:CSK_PRJ_ProjectStatusDetail_Issues_Subreport"]]></subreportExpression>
+						</subreport>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" positionType="Float" x="2" y="113" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="ef97eda5-186c-4dc9-9749-383fec6357ea">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<subreport>
+							<reportElement positionType="Float" x="0" y="0" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="eb40745e-23dd-4173-a8bb-c03a498a6e4d">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							</reportElement>
+							<subreportParameter name="ppmUserUITheme">
+								<subreportParameterExpression><![CDATA[$P{ppmUserUITheme}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="ppmUserLanguage">
+								<subreportParameterExpression><![CDATA[$P{ppmUserLanguage}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="projectKey_1">
+								<subreportParameterExpression><![CDATA[$F{INVESTMENT_KEY}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="riskIssueChangePriorityKey_1">
+								<subreportParameterExpression><![CDATA[$P{riskIssueChangePriorityKey_1}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="riskIssueChangeStatusKey_1">
+								<subreportParameterExpression><![CDATA[$P{riskIssueChangeStatusKey_1}]]></subreportParameterExpression>
+							</subreportParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							<subreportExpression><![CDATA["repo:CSK_PRJ_ProjectStatusDetail_ChangeRequests_Subreport"]]></subreportExpression>
+						</subreport>
+					</frame>
+					<frame>
+						<reportElement style="FrameBorder" positionType="Float" x="2" y="139" width="1040" height="20" isRemoveLineWhenBlank="true" uuid="9ac0f6ab-c6b4-44c6-81cc-648623ce953d">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<subreport>
+							<reportElement positionType="Float" x="0" y="0" width="1040" height="20" uuid="88f1c14d-cf24-4993-aa54-17b8edcbaa82">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							</reportElement>
+							<subreportParameter name="projectKey_1">
+								<subreportParameterExpression><![CDATA[$F{INVESTMENT_KEY}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="ppmUserUITheme">
+								<subreportParameterExpression><![CDATA[$P{ppmUserUITheme}]]></subreportParameterExpression>
+							</subreportParameter>
+							<subreportParameter name="ppmUserLanguage">
+								<subreportParameterExpression><![CDATA[$P{ppmUserLanguage}]]></subreportParameterExpression>
+							</subreportParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							<subreportExpression><![CDATA["repo:CSK_PRJ_ProjectStatusDetails_Dependencies"]]></subreportExpression>
+						</subreport>
+					</frame>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band/>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="18" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="1044" height="1" uuid="067108d0-3dd9-4588-808c-0df42a47bb33"/>
+			</line>
+			<textField evaluationTime="Report">
+				<reportElement style="PageFooter" x="0" y="2" width="160" height="16" uuid="9fc27fb4-eed2-426f-96f0-e9d87a3913fc"/>
+				<textFieldExpression><![CDATA[$R{DateKey} + ":  " + $V{vToday}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Page">
+				<reportElement style="PageFooter" x="894" y="2" width="120" height="16" uuid="6acd2a3c-2ee9-45b4-9c4f-81c06763dfe5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$R{PageKey} + " " + $V{PAGE_NUMBER} + " " + $R{ofKey} + " "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="PageFooter" x="1014" y="2" width="30" height="16" uuid="237033fd-81b6-40e3-bd78-0e8f959b40f5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+	<noData>
+		<band height="42">
+			<textField>
+				<reportElement style="Detail" x="0" y="22" width="780" height="18" uuid="7412ec20-312c-448b-9015-8e1b01688464"/>
+				<textFieldExpression><![CDATA[$R{NoMatchingRecordsKey}]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>
