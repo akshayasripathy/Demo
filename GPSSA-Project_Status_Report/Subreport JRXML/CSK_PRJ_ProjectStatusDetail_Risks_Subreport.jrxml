@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.1.0.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CSK_PRJ_ProjectStatusDetail_Risks_Subreport" language="groovy" pageWidth="1038" pageHeight="400" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1038" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="CSK_Report_Resource_Bundle" uuid="4cc00070-ac4d-40bf-8a0e-4c85104a80bf">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CA_PPM_DWH_BEAN"/>
+	<property name="ireport.jasperserver.url" value="http://172.23.12.12:8080/reportservice/"/>
+	<property name="ireport.jasperserver.report.resource" value="/Custom/Resources/CSK_PRJ_ProjectStatusDetail_Risks_Subreport"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Custom/Reports/project_status_report"/>
+	<property name="ireport.jasperserver.user" value="repdev|gpssa"/>
+	<property name="com.jaspersoft.studio.report.unit.description" value="Project Management (PMO Accelerator)"/>
+	<property name="com.jaspersoft.studio.report.description" value="Project "/>
+	<template><![CDATA["repo:/ca_ppm/templates/reportStyleTemplate_" +  $P{ppmUserUITheme} + 
+	                   (OR($P{ppmUserLanguage}.equals("ja"),$P{ppmUserLanguage}.contains("zh"),$P{ppmUserLanguage}.equals("ru"),$P{ppmUserLanguage}.equals("ko"),$P{ppmUserLanguage}.equals("cs")) ? "_dbcs" : "")]]></template>
+	<parameter name="ppmUserUITheme" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[UI Theme]]></parameterDescription>
+	</parameter>
+	<parameter name="ppmUserLanguage" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[User Language]]></parameterDescription>
+	</parameter>
+	<parameter name="projectKey_1" class="java.math.BigDecimal" isForPrompting="false">
+		<parameterDescription><![CDATA[Project]]></parameterDescription>
+	</parameter>
+	<parameter name="riskIssueChangePriorityKey_1" class="java.util.Collection" nestedType="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Risk, Issue, and Change Request Priority]]></parameterDescription>
+	</parameter>
+	<parameter name="riskIssueChangeStatusKey_1" class="java.util.Collection" nestedType="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Risk, Issue, and Change Request Status]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT r.investment_key AS investment_key,
+       r.risk_name AS risk_name,
+       r.risk_id AS risk_id,
+       r.description AS description,
+       rln.rim_response_type AS rim_response_type,
+       rln.rim_priority AS rim_priority,
+       rln.rim_probability AS rim_probability,
+       rln.rim_impact AS rim_impact,
+       rln.rim_status AS rim_status,
+       r.target_resolution_date AS target_resolution_date
+FROM   dwh_rim_risk r
+       LEFT OUTER JOIN dwh_rim_risk_ln rln ON  r.risk_key = rln.risk_key
+                                           AND rln.language_code = $P{ppmUserLanguage}
+WHERE  1=1
+AND    r.investment_key = $P{projectKey_1}
+AND    $X{IN, r.rim_priority_key, riskIssueChangePriorityKey_1} 
+AND    $X{IN, r.rim_status_key, riskIssueChangeStatusKey_1}]]>
+	</queryString>
+	<field name="INVESTMENT_KEY" class="java.math.BigDecimal"/>
+	<field name="RISK_NAME" class="java.lang.String"/>
+	<field name="RISK_ID" class="java.lang.String"/>
+	<field name="DESCRIPTION" class="java.lang.String"/>
+	<field name="RIM_RESPONSE_TYPE" class="java.lang.String"/>
+	<field name="RIM_PRIORITY" class="java.lang.String"/>
+	<field name="RIM_PROBABILITY" class="java.lang.String"/>
+	<field name="RIM_IMPACT" class="java.lang.String"/>
+	<field name="RIM_STATUS" class="java.lang.String"/>
+	<field name="TARGET_RESOLUTION_DATE" class="java.sql.Date"/>
+	<sortField name="TARGET_RESOLUTION_DATE"/>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="52" splitType="Stretch">
+			<textField>
+				<reportElement style="GroupHeader" x="0" y="0" width="1038" height="20" uuid="098921c3-1cd4-465f-9890-4df29acfffef"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{RisksKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="22" width="222" height="20" uuid="bb543101-7eb0-42b8-98e0-5c096698d30c"/>
+				<textElement>
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{NameKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="223" y="22" width="84" height="20" uuid="013a30c9-acd6-43be-b9d2-4aefb8566b08"/>
+				<textElement>
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{IDKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="308" y="22" width="272" height="20" uuid="a9cdb0e1-85cb-4dc4-888e-f6def1c0ecbf"/>
+				<textElement>
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{DescriptionKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="581" y="22" width="74" height="20" uuid="b22665aa-5f87-4a68-891d-0db4bbb4b14a"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{PriorityKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="656" y="22" width="74" height="20" uuid="964589de-0abf-4149-a6e3-faf1520ea019"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ProbabilityKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="731" y="22" width="74" height="20" uuid="cce1cd44-11d9-4f08-abbc-aad66bbc42f3"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ImpactKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="806" y="22" width="74" height="20" uuid="478587b8-90b8-489d-94cb-19bf7f538c8a"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{StatusKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="881" y="22" width="74" height="20" uuid="b2171111-f473-4b43-9dc4-39191be9b5e2"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ResponseTypeKey}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="ColumnHeader" positionType="Float" stretchType="RelativeToTallestObject" x="956" y="22" width="81" height="20" uuid="7f3dd748-62ce-46c6-8005-637a008fd6b9"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="arialbd.ttf"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{TgtResolutionKey}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="0" y="0" width="222" height="18" uuid="7c994388-33d2-4003-9d0a-6330e5843579"/>
+				<textFieldExpression><![CDATA[$F{RISK_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="223" y="0" width="84" height="18" uuid="e9c74e99-d89f-44f5-b51d-4812057bbf1d"/>
+				<textFieldExpression><![CDATA[$F{RISK_ID}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="308" y="0" width="272" height="18" uuid="35836644-250e-48b3-bdc2-719ab6fa76ed"/>
+				<textFieldExpression><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="581" y="0" width="74" height="18" uuid="39baec5d-9ac2-409a-af93-ef8c75e865cc"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{RIM_PRIORITY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="656" y="0" width="74" height="18" uuid="59fee8de-f65d-49bd-a0c2-18f7d00e490d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{RIM_PROBABILITY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="731" y="0" width="74" height="18" uuid="a34c97ae-4dd4-4b25-8c3b-e1ace52c8fa2"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{RIM_IMPACT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="806" y="0" width="74" height="18" uuid="00748416-9c7d-4ca1-b8e3-365c20a9673c"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{RIM_STATUS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" x="881" y="0" width="74" height="18" uuid="9a5e96e0-45f1-45cc-9643-60fc72fd9c15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{RIM_RESPONSE_TYPE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="956" y="0" width="81" height="18" uuid="91b63a79-1005-4a40-b324-a41f3cc9af57"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{TARGET_RESOLUTION_DATE})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="19" width="1037" height="1" forecolor="#DCDCDC" uuid="a0cf58b2-a283-44cc-b451-3e3a64b8a966"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band/>
+	</summary>
+	<noData>
+		<band height="42">
+			<textField>
+				<reportElement style="GroupHeader" x="0" y="0" width="1038" height="20" uuid="e9c9defd-df49-46a0-ad1e-dcaf8cbc440c"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$R{RisksKey}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="0" y="22" width="780" height="18" uuid="3f8de2aa-5482-420f-a5a5-f66e27240cb5"/>
+				<textFieldExpression><![CDATA[$R{NoMatchingRecordsKey}]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>
